@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Client</title>
+    <style>
+      #messages {
+        height: 300px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        overflow-y: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebSocket Client</h1>
+    <div id="connection-status">Not Connected</div>
+    <div id="messages"></div>
+    <input type="text" id="message-input" placeholder="Type a message..." />
+    <button id="send-button">Send</button>
+
+    <script>
+      const messagesDiv = document.getElementById("messages");
+      const connectionStatus = document.getElementById("connection-status");
+      const messageInput = document.getElementById("message-input");
+      const sendButton = document.getElementById("send-button");
+
+      // Create a new WebSocket connection
+      const socket = new WebSocket("ws://localhost:8080");
+      console.log("Websocket client started"); // logging in browser console
+
+      // Log messages to the UI
+      function logMessage(message, type = "info") {
+        const messageElement = document.createElement("div");
+        messageElement.textContent = message;
+        messageElement.className = `message ${type}`;
+        messagesDiv.appendChild(messageElement);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      // Connection opened
+      socket.addEventListener("open", (event) => {
+        connectionStatus.textContent = "Connected";
+        connectionStatus.style.color = "green";
+        logMessage("Connected to server", "success");
+      });
+
+      // Listen for messages from the server
+      socket.addEventListener("message", (event) => {
+        logMessage(`Received: ${event.data}`, "received");
+      });
+
+      // Connection closed
+      socket.addEventListener("close", (event) => {
+        connectionStatus.textContent = "Disconnected";
+        connectionStatus.style.color = "red";
+        logMessage("Disconnected from server", "error");
+      });
+
+      // Connection error
+      socket.addEventListener("error", (event) => {
+        connectionStatus.textContent = "Error";
+        connectionStatus.style.color = "red";
+        logMessage("WebSocket error", "error");
+      });
+
+      // Send button click handler
+      sendButton.addEventListener("click", () => {
+        const message = messageInput.value;
+        if (message && socket.readyState === WebSocket.OPEN) {
+          socket.send(message);
+          logMessage(`Sent: ${message}`, "sent");
+          messageInput.value = "";
+        }
+      });
+
+      // Also send on Enter key
+      messageInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          sendButton.click();
+        }
+      });
+    </script>
+  </body>
+</html>

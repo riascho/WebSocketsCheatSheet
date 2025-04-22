@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "npx tsx server.ts"
+  },
   "dependencies": {
     "ws": "^8.18.1"
   },

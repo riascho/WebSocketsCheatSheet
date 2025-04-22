@@ -2,16 +2,6 @@
 
 A comprehensive guide to understanding and implementing WebSockets for real-time communication between client and server.
 
-## Table of Contents
-
-- [What Are WebSockets?](#what-are-websockets)
-- [How WebSockets Work](#how-websockets-work)
-- [CORS and WebSockets](#cors-and-websockets)
-- [WebSocket Headers](#websocket-headers)
-- [Setting Up a WebSocket Server](#setting-up-a-websocket-server)
-- [Connecting from Client-Side](#connecting-from-client-side)
-- [Common Use Cases](#common-use-cases)
-
 ## What Are WebSockets?
 
 WebSockets provide a persistent, two-way communication channel between a client (typically a browser) and a server. Unlike traditional HTTP, which follows a request-response pattern, WebSockets enable real-time data transfer in both directions without needing to constantly establish new connections.
@@ -70,6 +60,7 @@ During the initial handshake, several important headers are sent:
 ```bash
 mkdir websocket-server
 cd websocket-server
+git clone https://github.com/riascho/WebSocketsCheatSheet.git
 ```
 
 2. Initialize a new Node.js project:
@@ -81,7 +72,7 @@ npm install
 3. Start the server:
 
 ```bash
-node-ts server.ts
+npm start
 ```
 
 ## Connecting from Client-Side
